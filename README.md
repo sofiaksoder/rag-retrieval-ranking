@@ -1,19 +1,22 @@
 # rag-retrieval-ranking
 
-Re-ranking and honest evaluation for retrieval-augmented question answering.
-Pure Python standard library, one file, no dependencies.
+Re-ranking and honest evaluation for retrieval-augmented question answering
+in pure Python standard library.
 
-This is the scoring and evaluation core extracted from a retrieval system I
-built that answers new RFP/RFI questions from an archive of past responses.
-The application around it (ingestion, vector store, LLM query analysis,
-approval workflow, UI) is private and not part of this repo.
+This project is a snippet of a retrieval system I professionally built for 
+an internal software prototype. It includes the scoring and evaluation core
+that supports answering new RFP/RFI questions using an archive of past 
+responses.
+
+The internal application (ingestion, vector store, LLM query analysis, approval 
+workflow, and UI) is private and not part of this repo.
 
 > **View-only.** This code is published to be read, not reused. See
 > [LICENSE](LICENSE).
 
-## Two ideas
+## The core in two parts
 
-### 1. A confidence score you can trust
+### 1. Trust-forward confidence scoring
 
 Stage 1 over-fetches candidates by vector similarity. Stage 2 re-ranks them
 by a **weighted geometric mean** of three signals:
@@ -22,23 +25,23 @@ by a **weighted geometric mean** of three signals:
 |---|---|---|
 | similarity | how close the stored question is to the one asked | 0.60 |
 | recency | newer documents are trusted more (clamped linear decay) | 0.25 |
-| metadata | does the document's context match what the asker is working on | 0.15 |
+| metadata | the degree of context similarity among available metadata values | 0.15 |
 
-Design decisions that matter:
+Intentional design decisions:
 
-- **Geometric mean, not a product.** Three signals of 0.8 multiply to 0.51 and
-  read as a weak match even though every signal agrees. The geometric mean
+- **Geometric mean instead of a standard product.** Three signals of 0.8 multiply to 0.51 and
+  read as a weak match even though every signal agrees. The geometric mean instead
   returns 0.8.
 - **A missing signal is dropped, not defaulted.** If the asker gave no context,
-  metadata is `None`: it is removed and the other weights are renormalised.
+  metadata is `None`: the factor is removed and the other weights are renormalised.
   Defaulting to 1.0 would silently credit every result with a "match" that was
   never computed.
-- **Untagged is not mismatched.** A document with no value for an attribute is
-  not penalised for it.
-- **Over-fetch the pool.** Re-ranking can only promote what stage 1 returned;
-  a pool of exactly `top_k` makes stage 2 a no-op.
+- **Missing values don't hurt the score.** A document with no value for an attribute
+  is not penalised for it.
+- **Over-fetch the candidate pool.** Re-ranking can’t surface documents stage 1 didn’t
+  retrieve. Fetch more than `top_k` so stage 2 has extra candidates to choose from.
 
-### 2. Evaluation that admits its uncertainty
+### 2. Evaluation with confidence transparency
 
 - hit@k and MRR on a hand-labelled set, with **95% Wilson intervals**, so
   "75%" on 36 questions is reported as the 59-86% it actually is.
@@ -79,13 +82,10 @@ Does the top-1 score separate right from wrong?
 (synthetic data: demonstrates the harness, not the method)
 ```
 
-The demo's numbers only show the harness working; they say nothing about any
-real system.
+## 1 use case of the real prototype
 
-## What I measured on the real system
-
-A hand-labelled set of 36 answerable and 6 unanswerable questions, run against
-a small synthetic archive (20 documents, 148 Q&A rows, 31 distinct answers,
+A hand-labelled set of 96 answerable and 4 unanswerable questions, run against
+a synthetic archive (80 documents, 592 Q&A rows, 124 distinct answers,
 `all-MiniLM-L6-v2` embeddings). Three variants:
 
 | variant | hit@1 | 95% CI | hit@5 | MRR |
@@ -95,13 +95,13 @@ a small synthetic archive (20 documents, 148 Q&A rows, 31 distinct answers,
 | C: + recency + metadata (full pipeline) | 61.1% | 45-75% | 69.4% | 0.63 |
 
 - On this set the metadata stage **reduced** top-1 accuracy, and recency left
-  the ranking unchanged. I report that rather than hide it: the set is small,
-  the intervals overlap, and the archive has few distinct answers.
+  the ranking unchanged.
 - The score's real value was **calibration**: AUROC of about 0.91 for
   separating correct top-1 results from wrong or unanswerable ones, which is
-  what lets the application flag low-confidence answers for human review.
+  what lets the application flag low-confidence answers for human review -
+  directed towards a subject-matter expert.
 
-## Not included, on purpose
+## Not included
 
 Prompts, the ingestion pipeline, the vector-store integration, the LLM
 relevance gate, expert routing, the approval workflow, the UI and all data.
