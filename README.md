@@ -82,13 +82,13 @@ Does the top-1 score separate right from wrong?
 (synthetic data: demonstrates the harness, not the method)
 ```
 
-## 1 use case of the real prototype
+## A Use Case of the real prototype
 
 A hand-labelled set of 96 answerable and 4 unanswerable questions, run against
 a synthetic archive (80 documents, 592 Q&A rows, 124 distinct answers,
 `all-MiniLM-L6-v2` embeddings). Three variants:
 
-| variant | hit@1 | 95% CI | hit@5 | MRR |
+| Variant | hit@1 | 95% CI | hit@5 | MRR |
 |---|---|---|---|---|
 | A: cosine similarity only | 75.0% | 59-86% | 83.3% | 0.78 |
 | B: + recency | 75.0% | 59-86% | 83.3% | 0.78 |
