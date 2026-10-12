@@ -1,6 +1,6 @@
 # Copyright (c) 2026 Sofia Soderberg. All rights reserved. View-only: see LICENSE.
 """
-rag_ranking_eval.py - ranking and evaluation toolkit for retrieval-augmented
+rag_retrieval_ranking.py - ranking and evaluation toolkit for retrieval-augmented
 question answering. Pure standard library, no dependencies.
 
 Two halves that are meant to be used together:
@@ -31,7 +31,7 @@ Two halves that are meant to be used together:
    Retrieval variants are run side by side as an ablation so you can see
    which stage helps and which one is hurting.
 
-Run `python rag_ranking_eval.py` for a demo on synthetic data. The demo shows
+Run `python rag_retrieval_ranking.py` for a demo on synthetic data. The demo shows
 the machinery working; its numbers say nothing about any real system.
 """
 from __future__ import annotations

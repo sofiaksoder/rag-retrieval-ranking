@@ -2,7 +2,7 @@
 import unittest
 from datetime import date
 
-import rag_ranking_eval as r
+import rag_retrieval_ranking as r
 
 TODAY = date(2026, 1, 1)
 

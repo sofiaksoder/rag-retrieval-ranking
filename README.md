@@ -51,7 +51,7 @@ Design decisions that matter:
 ## Usage
 
 ```python
-from rag_ranking_eval import Candidate, retrieve
+from rag_retrieval_ranking import Candidate, retrieve
 
 def search(query, n):                      # any vector store
     return [Candidate(doc_id, cosine, "2024-03-15", {"industry": "retail"}), ...]
@@ -62,7 +62,7 @@ for r in top:
     print(r.candidate.doc_id, round(r.score, 2), r.recency, r.metadata)
 ```
 
-`python rag_ranking_eval.py` runs a self-contained demo on synthetic data and
+`python rag_retrieval_ranking.py` runs a self-contained demo on synthetic data and
 `python -m unittest` runs the tests.
 
 ```text
