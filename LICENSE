@@ -1,0 +1,21 @@
+Copyright (c) 2026 Sofia Soderberg. All rights reserved.
+
+This repository is published so that it can be READ and EVALUATED (for
+example by people reviewing my work). It is not open-source software.
+
+You MAY:
+  - view and read the source and documentation;
+  - run the included demo and tests locally, unmodified, to see how it works.
+
+You MAY NOT, without my prior written permission:
+  - copy, reproduce or redistribute any part of this repository;
+  - modify it or create derivative works from it;
+  - use it, or any part of it or its design, in any product, service,
+    project or codebase, whether commercial or not;
+  - use it to train or fine-tune a machine-learning model;
+  - remove or alter this notice or the copyright headers in the source.
+
+The software is provided "as is", without warranty of any kind.
+
+To ask for permission, contact me through the profile that hosts this
+repository.
