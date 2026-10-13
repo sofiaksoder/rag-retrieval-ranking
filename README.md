@@ -84,8 +84,8 @@ Does the top-1 score separate right from wrong?
 
 ## A Use Case of the real prototype
 
-A hand-labelled set of 96 answerable and 4 unanswerable questions, run against
-a synthetic archive (80 documents, 592 Q&A rows, 124 distinct answers,
+A hand-labelled set of 36 answerable and 6 unanswerable questions, run against
+a synthetic archive (20 documents, 148 Q&A rows, 31 distinct answers,
 `all-MiniLM-L6-v2` embeddings). Three variants:
 
 | Variant | hit@1 | 95% CI | hit@5 | MRR |
